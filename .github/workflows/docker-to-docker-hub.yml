@@ -20,27 +20,18 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{ secrets.DOCKER_USERNAME }}/budgetbutlerweb-companion-static
-          tags: |
-            type=ref,event=branch
-            type=ref,event=tag
       -
         name: Docker meta BB Companion
         id: meta_companion
         uses: docker/metadata-action@v3
         with:
           images: ${{ secrets.DOCKER_USERNAME }}/budgetbutlerweb-companion-fpm
-          tags: |
-            type=ref,event=branch
-            type=ref,event=tag
       -
         name: Docker meta BB Offline
         id: meta_offline
         uses: docker/metadata-action@v3
         with:
           images: ${{ secrets.DOCKER_USERNAME }}/budgetbutlerweb-offline
-          tags: |
-            type=ref,event=branch
-            type=ref,event=tag
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -103,6 +94,3 @@ jobs:
           labels: ${{ steps.meta_offline.outputs.labels }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-      -
-        name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
