@@ -18,9 +18,6 @@ jobs:
     - name: Checkout target repo
       uses: actions/checkout@v2
       with:
-        # optional: set the branch to checkout,
-        # sync action checks out your 'target_sync_branch' anyway
-        ref:  my-branch
         # REQUIRED if your upstream repo is private (see wiki)
         persist-credentials: false
 
