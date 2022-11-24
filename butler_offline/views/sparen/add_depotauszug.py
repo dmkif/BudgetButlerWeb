@@ -1,13 +1,14 @@
 from butler_offline.viewcore.state.persisted_state import database_instance
-from butler_offline.viewcore import viewcore
 from butler_offline.viewcore.viewcore import post_action_is
 from butler_offline.viewcore.converter import from_double_to_german, datum, datum_to_string, datum_to_german
 from butler_offline.viewcore import request_handler
 from butler_offline.viewcore.state import non_persisted_state
 from butler_offline.views.sparen.language import NO_VALID_DEPOT_IN_DB, NO_VALID_SHARE_IN_DB
 from datetime import date
+from butler_offline.viewcore.context import generate_transactional_context, generate_error_context
 
 KEY_WERT = 'wert_'
+
 
 def calculate_filled_items(actual, possible):
     filled_items = []
@@ -16,6 +17,7 @@ def calculate_filled_items(actual, possible):
         if element.Wert != 0:
             filled_items.append(to_item(isin, resolve_description(isin, possible), element.Wert))
     return filled_items
+
 
 def calculate_empty_items(possible, filled):
     empty = possible.copy()
@@ -42,18 +44,20 @@ def to_item(isin, description, wert):
         'wert': wert
     }
 
+
 def resolve_description(isin, all):
     for element in all:
         if element['isin'] == isin:
             return element['description']
     return None
 
+
 def handle_request(request):
     if not database_instance().sparkontos.get_depots():
-        return viewcore.generate_error_context('add_depotauszug', NO_VALID_DEPOT_IN_DB)
+        return generate_error_context('add_depotauszug', NO_VALID_DEPOT_IN_DB)
 
     if not database_instance().depotwerte.get_depotwerte():
-        return viewcore.generate_error_context('add_depotauszug', NO_VALID_SHARE_IN_DB)
+        return generate_error_context('add_depotauszug', NO_VALID_SHARE_IN_DB)
 
     if post_action_is(request, 'add'):
         current_date = None
@@ -61,7 +65,7 @@ def handle_request(request):
             if element.startswith('datum_'):
                 current_date = datum(request.values[element])
         if not current_date:
-            return viewcore.generate_error_context('add_depotauszug', 'Interner Fehler <Kein Datum gefunden>.')
+            return generate_error_context('add_depotauszug', 'Interner Fehler <Kein Datum gefunden>.')
         konto = request.values['konto']
 
         if "edit_index" in request.values:
@@ -105,7 +109,7 @@ def handle_request(request):
 
             result = database_instance().depotauszuege.get_by(current_date, konto)
             if len(result) > 0:
-                return viewcore.generate_error_context('add_depotauszug',
+                return generate_error_context('add_depotauszug',
                                                        'Für es besteht bereits ein Kontoauszug für {} am {}'.format(
                                                            konto,
                                                            datum_to_german(current_date)))
@@ -132,7 +136,7 @@ def handle_request(request):
                             'konto': konto
                             })
 
-    context = viewcore.generate_transactional_context('add_depotauszug')
+    context = generate_transactional_context('add_depotauszug')
     context['approve_title'] = 'Depotauszug hinzufügen'
 
     depotwerte = database_instance().depotwerte.get_depotwerte_descriptions()
