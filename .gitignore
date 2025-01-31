@@ -3,6 +3,7 @@
 /.pydevproject
 /Database_*
 /Import/*
+/Backups/*
 **/*.pyc
 **/.pytest_cache
 /online/vendor
@@ -15,4 +16,14 @@
 *.iml
 config
 **/shares_info_cache.json
-
+/build/
+/dist/
+/BudgetButlerWeb.egg-info/
+.coverage
+/logs/
+/target
+/data
+butler_offline/target
+/database_migrator/venv
+data/Database_Test_User.csv
+database_migrator/Database_Test_User.csv

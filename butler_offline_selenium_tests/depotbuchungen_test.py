@@ -30,12 +30,12 @@ class TestUI(SeleniumTestClass):
 
         page_order_uebersicht.visit()
 
-        assert page_order_uebersicht.get(0) == {
+        assert page_order_uebersicht.get(3) == {
             'datum': '01.01.2020',
             'name': 'testname',
             'depotwert': 'Testdepotwert (ISINDEMO)',
             'konto': 'Testdepot',
-            'wert': '10,00'
+            'wert': '10,00 €'
         }
         close_driver(driver)
 
@@ -63,9 +63,9 @@ class TestUI(SeleniumTestClass):
         assert page_sparkonto_uebersicht.get(0) == {
             'name': 'TestKonto',
             'typ': 'Depot',
-            'wert': '9,00',
-            'aufbuchungen': '10,00',
-            'difference': '-1,00'
+            'wert': '9,00 €',
+            'aufbuchungen': '10,00 €',
+            'difference': '-1,00 €'
         }
         close_driver(driver)
 
@@ -84,7 +84,7 @@ class TestUI(SeleniumTestClass):
         assert page_depotwert_uebersicht.get(0) == {
             'name': 'Testdepotwert',
             'isin': 'ISINDEMO',
-            'wert': '0,00'
+            'wert': '0,00 €'
         }
         close_driver(driver)
 

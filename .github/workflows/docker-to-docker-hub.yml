@@ -1,4 +1,4 @@
-name: CI to Docker Hub 
+name: Publish Companion App to DockerHub
 
 on:
   push:
@@ -63,22 +63,46 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags: ${{ steps.meta_static.outputs.tags }}
-          labels: ${{ steps.meta_static.outputs.labels }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/budgetbutlerweb-companion-frontend-static:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
       -
-        name: Build and push fpm
-        id: docker_build_bb_fpm
+        name: Build and push api
+        id: docker_build_bb_api
         uses: docker/build-push-action@v2
         with:
           context: ./
-          file: ./Dockerfile.fpm
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          file: ./Dockerfile.api
+          platforms: linux/amd64
           builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags: ${{ steps.meta_companion.outputs.tags }}
-          labels: ${{ steps.meta_companion.outputs.labels }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/budgetbutlerweb-companion-api:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+      -
+        name: Build and push cron
+        id: docker_build_bb_cron
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./Dockerfile.cron
+          platforms: linux/amd64
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/budgetbutlerweb-companion-cron:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+      -
+        name: Build and push desktop app
+        id: docker_build_bb_desktopapp
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./Dockerfile.desktopapp
+          platforms: linux/amd64
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/budgetbutlerweb-desktopapp:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
       -

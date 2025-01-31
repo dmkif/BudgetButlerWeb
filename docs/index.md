@@ -1,140 +1,148 @@
+---
+layout: default
+---
+
 # BudgetButlerWeb
-[![Build Status](https://travis-ci.org/SebastianRzk/BudgetButlerWeb.svg?branch=master)](https://travis-ci.org/SebastianRzk/BudgetButlerWeb) [![codecov](https://codecov.io/gh/SebastianRzk/BudgetButlerWeb/branch/master/graph/badge.svg)](https://codecov.io/gh/SebastianRzk/BudgetButlerWeb)
 
-* TOC
-{:toc}
+![GithubCI Build and Test](https://github.com/SebastianRzk/BudgetButlerWeb/actions/workflows/build.yml/badge.svg?branch=master)
+![GithubCI Publish](https://github.com/SebastianRzk/BudgetButlerWeb/actions/workflows/docker-to-docker-hub.yml/badge.svg?branch=master)
 
-[Screenshots Desktop](screenshots_desktop)
+Ein einfaches Haushaltsbuch für eine schlanke und individuelle Finanzverwaltung.
 
-[Screenshots Companion App](screenshots_mobile)
+## Inhaltsverzeichnis
+
+* [Idee](#idee)
+* [Merkmale](#merkmale)
+* [Unterstützte Plattformen](#unterstützte-plattformen)
+* [Mitmachen](#mitmachen)
+* [Screenshots](#screenshots)
+	* [Screenshots BudgetButlerWeb Offline Anwendung](#screenshots-budgetbutlerweb-offline-anwendung)
+	* [Screenshots Begleiter Web-App](#screenshots-begleiter-web-app)
+* [ :link: Desktop Client](butler-offline.md)
+* [ :link: Begleiter Web-App](butler-companion.md)
+* [ :link: Changelog](changelog.md)
 
 ## Idee
 
-* Einfache lokale Datenhaltung: Die Daten sind im CSV-Format gespeichert und damit mit einem Textverarbeitungsprogramm oder einem Tabellenverarbeitungsprogramm zugänglich.
+* Einfache lokale Datenhaltung: Die Daten sind im CSV-Format gespeichert und sind damit mit einem Textverarbeitungsprogramm
+  oder einem Tabellenverarbeitungsprogramm zugänglich.
 * Unkomplizierte Einnahmen/Ausgaben-Rechnung, keine doppelte Buchführung.
-* Schlanke Begleiter-Web-App für unterwegs (online-Version, mobil-optimiert). Import der Daten in die lokale Anwendung
-* Schlankes Design
+* Schlanke Begleiter-Web-App für unterwegs (online-Version, mobil-optimiert). Automatisierter Import der Daten in die
+  lokale Anwendung. Single-Sign-On über OpenID-Provider.
+* Schlankes und minimalistisches Design
 * Hohe Geschwindigkeit, auch bei großen Datenmengen
-* Quelloffen
 * Individualisierbar
+* Quelloffen
 
 ## Merkmale
 
-* Einzelbuchungen
-  * Einzelbuchungen (erfassen, ändern, löschen)
-  * Daueraufträge (erfassen, ändern, löschen)
-  * Monatsübersicht
-  * Jahresübersicht
-  * Automatischer Import von Sparbuchungen, Order sowie gemeinsamen Buchungen
+* **Einzelbuchungen**
+	* **Erfassen, Ändern, Löschen**: Verwalte Einnahmen und Ausgaben einfach und effizient.
+	* **Daueraufträge**: Richte wiederkehrende Zahlungen ein und passe diese flexibel an deine Bedürfnisse an. Egal ob
+	  in der Zukunft oder in der Vergangenheit.
+	* **Monats- und Jahresübersicht**: : Behalten deine Finanzen im Blick mit detaillierten Übersichten.
+	* Automatischer Import von Sparbuchungen, Order sowie gemeinsamen Buchungen in die "Einzelbuchungen"-Gesamtübersicht
+	* Importiere Buchungen aus der Begleiter Web-App.
 
+* **Gemeinsame Buchungen**
+	* **Verwalten**: Erfasse, ändere und lösche gemeinsame Buchungen.
+    * **Abrechnungen**: Erstelle und exportiere Abrechnungen für gemeinsame Ausgaben. Viele verschiedene
+      Abrechnungsmöglichkeiten stehen zur Verfügung.
+    * **Import**: Importiere gemeinsame Buchungen aus der Begleiter Web-App.
 
-* Gemeinsame Buchungen
-  * Erfassen, Ändern, Löschen
-  * Abrechnung erstellen.
-  * Abrechnungen exportieren und importieren
+* **Sparen**
+	* **Verwalten**: Erfasse und verfolge dein Sparen von klassischen Sparkonten bis zu Aktien und ETFs, mittels
+	  einfacher Input-Output-Rechnung. Berücksichtige dabei Kosten wie Depotgebühren oder Vorabpauschale.
+	* **Übersichten**: Vergleichen deine Einnahmen, Ausgaben und Spar-Buchungen über die Zeit. Tracke die Performance
+	  deiner einzelnen Werte sowie die Zusammensetzung deiner Sparanlage.
+	* **ETF-Portfolio**: (aktuell nur durch manuelle Konfiguration möglich) Analysiere dein ETF-Portfolio nach Kosten,
+	  Sektoren und Ländern.
 
+* **Konfiguration**
+	* **Anpassung**: Passe das Farbthema und die Kategorien nach deinen Wünschen an.
+	* **Übergreifende Aktionen**: Führe Aktionen wie das Umbenennen von Kategorien oder das Ausschließen von
+	  Kategorien für Eingabefelder durch.
 
-* Sparen
-  * Erfassen, Ändern und Löschen von Sparkontos, Sparbuchungen, Depots, Depotwerte (mit Typ : ETF, Fond, Einzelaktie, Crypto oder Robo), Order, Order-Dauerauftraegen sowie Depotauszuege
-  * Sparen Übersicht:
-    * Vergleich: Einnahmen, Ausgaben und Sparen über die Zeit
-    * Zusammensetzung der Sparanlage
-  * ETF-Portfolio Vergleichen: Kosten, Sektoren und Länder jeweis pro ETF und nach Anteil im Portfolio
+## Unterstützte Plattformen
 
+| Plattform               | Offline-Anwendung                                                                                                             | Nutzung Mobile Begleiter-App      | Deployment Mobile Begleiter App                                  |
+|-------------------------|-------------------------------------------------------------------------------------------------------------------------------|-----------------------------------|------------------------------------------------------------------|
+| Linux-Desktop           | :white_check_mark: [Installationsanleitung](butler-offline.md)                                                                | :white_check_mark: Über Webrowser | möglich, aktuell keine Dokumentation                             |
+| Docker / docker-compose | :white_check_mark: [Installationsanleitung](butler-offline.md)                                                                |                                   | :white_check_mark: [Installationsanleitung](butler-companion.md) |
+| Windows                 | :black_square_button: nicht getestet, theoretisch möglich über eine Anpassung der `build.sh`, alternativ über WSL oder Docker | :white_check_mark: Über Webrowser | :o: Wahrscheinlich nicht ohne Anpassungen möglich                |
+| MacOS                   | :black_square_button: nicht getestet, theoretisch möglich über eine Anpassung der `build.sh`, alternativ über Docker          | :white_check_mark: Über Webrowser | :o: Wahrscheinlich nicht ohne Anpassungen möglich                |
 
-* Konfiguration
-  * Farbthema anpassen
-  * Farben der Kategorien anpassen
-  * Verwendung mehrerer Datenbanken
+## Mitmachen
 
-## Offline Anwendung: BudgetButlerWeb
+* Fehler, Fragen, Anmerkungen oder Ideen gerne
+  als ["ISSUE" hier hinterlassen](https://github.com/SebastianRzk/BudgetButlerWeb/issues)
+* Code-Änderungen (Pull-Requests) immer bitte immer gegen den
+  `dev`-[Branch hier hin](https://github.com/SebastianRzk/BudgetButlerWeb/pulls)
+* [Hier liegt der Code](https://github.com/SebastianRzk/BudgetButlerWeb)
+* [Hier liegen die Docker-Images für die Begleiter Web-App, sowie auch für die Desktop-App](https://hub.docker.com/u/sebastianrzk),
+  und [hier sind Deployment Beispiele für die Begleiter Web-App](https://github.com/SebastianRzk/BudgetButlerWeb/tree/master/docker-compose-examples)
 
-### Systemvoraussetzungen
+## Screenshots
 
-* Python 3.9
-* Pip
-* Moderner Webbrowser (z.B. Firefox oder Chromium)
-* Startup-Skript: shell, curl, Chromium
-* Versionierung: git
+### Screenshots BudgetButlerWeb Offline Anwendung
 
-### Installation
-Das Git-Repository clonen:
+![Dashboard](img/screenshots_desktop/dashboard.png)
 
-	git clone https://github.com/SebastianRzk/BudgetButlerWeb.git
+#### Einzelbuchungen
 
-Ins Projektverzeichnis wechseln:
+##### Übersicht Einzelbuchungen
+![Übersicht Einzelbuchungen](img/screenshots_desktop/uebersicht_einzelbuchungen.png)
 
-	cd BudgetButlerWeb
+##### Daueraufträge hinzufügen
+![Daueraufträge hinzufügen](img/screenshots_desktop/dauerauftraege_add.png)
 
-### Server Starten
+##### Übersicht Daueraufträge
+![Übersicht Daueraufträge](img/screenshots_desktop/uebersicht_dauerauftraege.png)
 
-Flask-Server starten:
+##### Jahresübersicht
+![Übersicht Jahr](img/screenshots_desktop/uebersicht_jahr.png)
 
-	sh start_butler_offline.sh
+##### Monatsübersicht
+![Übersicht Monat](img/screenshots_desktop/uebersicht_monat.png)
 
-BudgetButlerWeb ist unter folgender Adresse zu erreichen:
+#### Gemeinsame Buchungen
 
-	http://127.0.0.1:5000/
+##### Gemeinsame Buchungen hinzufügen
+![Gemeinsame Buchungen hinzufügen](img/screenshots_desktop/add_gemeinsam.png)
 
-### Softwaretests ausführen
+##### Gemeinsame Buchungen abrechnen
+![Gemeinsame Buchungen abrechnen](img/screenshots_desktop/gemeinsam_abrechnen.png)
 
-Alle Softwaretestsmit pytest starten:
+#### Sparen
 
-	pytest
+##### Sparen Übersicht
+![Sparen Übersicht](img/screenshots_desktop/sparen_uebersicht.png)
 
-Testabdeckung mit pytest berechnen:
+##### Depotwerte Übersicht
+![Depotwerte Übersicht](img/screenshots_desktop/sparen_uebersicht_depotwerte.png)
 
-	pytest butler_offline --cov
+##### ETF Übersicht
+![ETFs Übersicht](img/screenshots_desktop/sparen_uebersicht_etfs.png)
 
-### Updates
+### Screenshots Begleiter Web-App
 
-BudgetButlerWeb aktualisieren:
+#### Menu
+![Menü](img/screenshots_mobile/menu.png)
 
-	git pull
+#### Schnellerfassung
+![Erfassen](img/screenshots_mobile/erfassen.png)
 
+#### Übersicht gemeinsame Buchungen
+![Gemeinsam](img/screenshots_mobile/gemeinsam.png)
 
-## Umgebungsvariablen
+#### Übersicht gemeinsame Buchungen
+![Einzel](img/screenshots_mobile/einzel.png)
 
+#### Dauerauftrag erfassen
+![Erfassen Dauerauftrag](img/screenshots_mobile/erfassen_dauerauftrag.png)
 
-| Wert | Default | Beschreibung |
-|------| ------- | ------------ |
-| BUDGETBUTLERWEB_DATABASE_PATH | .. | Ordner an dem die Datenbanken gesucht werden sollen. |
-| BUDGETBUTLERWEB_CONFIG_PATH | .. | Ordner an dem die Configuration gesucht werden soll. |
+#### Übersicht Daueraufträge
+![Übersicht Dauerauftrag](img/screenshots_mobile/uebersicht_dauerauftrag.png)
 
-
-## Begleiter Web-App:
-
-### Systemanfoderungen zum Build
-
-* npm
-* composer + php 8+
-
-### Systemanforderung für den Betrieb:
-
-* docker und docker-compose
-
-
-### Installation docker + docker-compose
-
-* Repo clonen
-
-        git clone https://github.com/SebastianRzk/BudgetButlerWeb.git
-
-* Ins Projektverzeichnis wechseln
-
-        cd BudgetButlerWeb
-
-* Für http (und nicht https Betrieb) in der Datei `butler_online_api/api/util/creds.php` in der Methode `online` den Rückgabewert auf `false` ändern
-
-* Build in das Verzeichnis `butler_online_distribution` triggern
-
-        sh butler_online_install/build_images.sh
-
-
-* Folgenden Befehl ausführen `docker-compose up` in `butler_online_distribution/budget_butler`
-
-* Login auf `/`. Initiale Anmeldedaten:
-  * User: admin@admin.de
-  * Password: adminadminadmin
-
-
+#### Buchungen erfassen in Desktop-Ansicht
+![Erfassen Desktop](img/screenshots_mobile/erfassen_desktop.png)

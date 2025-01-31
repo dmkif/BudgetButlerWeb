@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 
-class EinzelbuchungenUebersicht:
 
+class EinzelbuchungenUebersicht:
     def __init__(self, driver):
         self.driver = driver
 
@@ -9,7 +9,11 @@ class EinzelbuchungenUebersicht:
         self.driver.get('http://localhost:5000/uebersicht/')
 
     def open_module(self, month, year):
-        open_table_button = self.driver.find_element(By.ID, 'open_{year}.{month}'.format(year=year, month=month))
+        month = str(month)
+        if len(month) == 1:
+            month = '0' + month
+
+        open_table_button = self.driver.find_element(By.ID, 'open_{month}/{year}'.format(year=year, month=month))
         open_table_button.click()
 
     def get_item_in_opened_module(self, id):

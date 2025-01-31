@@ -10,8 +10,6 @@ from butler_offline_selenium_tests.page.sparen.depot_uebersicht import DepotUebe
 
 
 class TestUI(SeleniumTestClass):
-
-
     def teste_uebersicht_kontos(self, get_driver, close_driver):
         driver = get_driver()
         enter_test_mode(driver)
@@ -39,18 +37,17 @@ class TestUI(SeleniumTestClass):
         assert page_sparkonto_uebersicht.get(0) == {
             'name': 'TestDepot',
             'typ': 'Depot',
-            'wert': '124,00',
-            'aufbuchungen': '123,00',
-            'difference': '1,00'
+            'wert': '124,00 €',
+            'aufbuchungen': '123,00 €',
+            'difference': '1,00 €'
         }
 
         assert page_sparkonto_uebersicht.get_gesamt() == {
-            'wert': '124,00',
-            'aufbuchungen': '123,00',
-            'difference': '1,00'
+            'wert': '124,00 €',
+            'aufbuchungen': '123,00 €',
+            'difference': '1,00 €'
         }
         close_driver(driver)
-
 
     def teste_orderdauerauftrag(self, get_driver, close_driver):
         driver = get_driver()
@@ -73,7 +70,7 @@ class TestUI(SeleniumTestClass):
 
         page_sparkonto_uebersicht.visit()
 
-        assert page_sparkonto_uebersicht.get(0)['aufbuchungen'] == '202,00'
+        assert page_sparkonto_uebersicht.get(0)['aufbuchungen'] == '202,00 €'
 
         page_order_uebersicht.visit()
 
@@ -82,7 +79,7 @@ class TestUI(SeleniumTestClass):
             'konto': 'TestDepot',
             'depotwert': 'Depotwert1 (Isin1)',
             'name': 'first order',
-            'wert': '101,00'
+            'wert': '101,00 €'
         }
 
         assert page_order_uebersicht.get(1) == {
@@ -90,10 +87,7 @@ class TestUI(SeleniumTestClass):
             'konto': 'TestDepot',
             'depotwert': 'Depotwert1 (Isin1)',
             'name': 'first order',
-            'wert': '101,00'
+            'wert': '101,00 €'
         }
 
         close_driver(driver)
-
-
-

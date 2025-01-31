@@ -1,7 +1,4 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
-
-name: Build Python application
+name: Build Offline Application and Companion App
 
 on:
   push:
@@ -10,44 +7,57 @@ on:
     branches: [ master ]
 
 jobs:
-  butler_offline:
-
+  butler-offline-test:
+    name: offline cargo test
     runs-on: ubuntu-latest
-    env:
-        #PATH: $PATH:$PWD/geckodriver
-        TRAVIS_INTEGRATION: TRUE
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9
-    - name: Install dependencies
-      run: |
-        sh ./ci/install_requirements.sh
-        pip install flake8 pytest
-        wget https://github.com/mozilla/geckodriver/releases/download/v0.32.0/geckodriver-v0.32.0-linux64.tar.gz
-        mkdir geckodriver
-        tar -xzf geckodriver-v0.32.0-linux64.tar.gz -C geckodriver
-        firefox --version
-        wget https://raw.githubusercontent.com/creationix/nvm/v0.31.0/nvm.sh -O ~/.nvm/nvm.sh
-        source ~/.nvm/nvm.sh
-        nvm install 12
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Unit test with pytest
-      run: |
-        sh ci/run_unit_tests.sh
-    - name: Integration test with pytest
-      run: |
-        sh ci/run_integration_tests.sh
-  butler_online_frontend:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - run: cargo test
+        working-directory: ./butler_offline
+  butler-offline-assembly:
+    name: offline assembly
     runs-on: ubuntu-latest
-    steps: 
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - run: bash build.sh
+        working-directory: .
+  butler-offline-formatting:
+    name: offline cargo fmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: rustfmt
+      - name:  Check
+        run: cargo fmt --all -- --check
+        working-directory: ./butler_offline
+  butler-offline-application-wrapper:
+    name: offline application-wrapper build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: npm install and npm run CI commands
+        run: |
+          npm i
+          npm run publish
+        working-directory: ./application-wrapper/BudgetButlerWeb
+  butler-offline-application-wrapper-lint:
+    name: offline application-wrapper lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: npm install and npm run CI commands
+        run: |
+          npm i
+          npm run lint
+        working-directory: ./application-wrapper/BudgetButlerWeb
+  butler_online_frontend:
+    name: online api frontend test
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@v2
       -
         name: Set up QEMU
@@ -59,4 +69,54 @@ jobs:
         name: execute tests
         run: |
           docker build -f Dockerfile.test .
-
+  butker_online_frontend_lint:
+    name: online api frontend lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: npm install and npm run CI commands
+        run: |
+          npm i
+          npm run lint
+        working-directory: ./butler_online/budgetbutler
+  butler_online_api:
+    name: online api build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: execute tests
+        run: |
+          docker build -f Dockerfile.api .
+  butler_online_api_formatting:
+    name: online api cargo fmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: rustfmt
+      - name: Check
+        run: cargo fmt --all -- --check
+        working-directory: ./butler_online_api
+  butler_online_cron:
+    name: online api cron build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: execute tests
+        run: |
+          docker build -f Dockerfile.cron .
